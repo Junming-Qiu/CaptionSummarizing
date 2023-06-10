@@ -6,7 +6,7 @@ class YTCaptioner():
     def get_transcript(id):
         t = YouTubeTranscriptApi.get_transcript(id)
         formatter = TextFormatter()
-        return (formatter.format_transcript(t),)
+        return formatter.format_transcript(t)
 
 # API to retrieve Zoom captions
 class ZoomCaptioner():
@@ -31,5 +31,17 @@ class DocParser():
             file += cleaned
         
         ret.append(file)
+
+        return tuple(ret)
+
+class SummaryParser():
+    def get_transcript(prompt):
+        ret = []
+        
+        for i in range(0, len(prompt), SEGMENT):
+            if i+SEGMENT < len(prompt):
+                ret.append(prompt[i:i+SEGMENT])
+            else:
+                ret.append(prompt[i:])
 
         return tuple(ret)
